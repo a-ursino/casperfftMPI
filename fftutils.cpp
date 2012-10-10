@@ -23,7 +23,7 @@ void cleanup(){
 
 
 bool readConfig(const char* const fName){
-
+	printf("Reading the file %s\n",fName);
 	return true;
 }
 

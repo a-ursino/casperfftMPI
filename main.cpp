@@ -28,14 +28,16 @@ int main(int argc, char **argv){
   	const char* const fName = (argc == 2) ? argv[1] : 0;
 
   	if (fName) {
-           if (!readConfig(fName)) {
-                cout << "Error in config file abort" << endl;  
-                return 0;
-           }
-           
-      } else {
-           cout << "Config file not specified. Executing with default config" << endl;
+      if (!readConfig(fName)) {
+        printf("Error in config file abort");
+        return 0;
+      }else{
+        printf("Reading the file %s ok\n", fName);        
       }
+           
+    } else {
+      printf("Config file not specified. Executing with default config");
+    }
 
       //print configuration file
       cout << "BLOCK_SIZE = " << blockSize << endl;
