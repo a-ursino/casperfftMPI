@@ -5,13 +5,13 @@
 using namespace std;
 
 
-extern unsigned blockSize;
-extern unsigned fftAlgo;
-extern unsigned print;
+unsigned blockSize;
+unsigned fftAlgo;
+unsigned print;
 
-extern unsigned xRange;
-extern unsigned yRange;
-extern unsigned zRange;
+unsigned xRange;
+unsigned yRange;
+unsigned zRange;
 
 
 /* Functions Implementation*/
