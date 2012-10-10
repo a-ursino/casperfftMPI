@@ -1,7 +1,7 @@
 #ifndef __FFTUTILS__
 #define __FFTUTILS__
 
-//Global Vars
+// Global Vars
 
 //*******3dFFT configuration file setting STARTS************//
 extern unsigned blockSize;

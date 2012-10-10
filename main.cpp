@@ -21,7 +21,7 @@ int main(int argc, char **argv){
   int name_len;
   MPI_Get_processor_name(processor_name, &name_len);
 
-  if(rank==0){
+  if(rankid==0){
     printf("Hello world from processor %s, rank %d out of %d processors. THE MASTER\n", processor_name, rankid, world_size);
 
     //read from configuration file

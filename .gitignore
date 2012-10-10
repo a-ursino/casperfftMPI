@@ -7,7 +7,7 @@
 # Compiled Dynamic libraries
 *.so
 
-# Compiled Static libraries
+# Compiled Static libraries 
 *.lai
 *.la
 *.a
