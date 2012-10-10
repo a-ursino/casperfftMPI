@@ -10,11 +10,11 @@ CFLAGS = -Wall
 OBJFILES := $(patsubst %.cpp,%.o, $(wildcard *.cpp))
 HFILES := $(wildcard *.h)
 
-3dfft:  $(OBJFILES)	
-	$(CC) -o 3dfft.bin $(OBJFILES) $(CFLAGS)
+fft3d:  $(OBJFILES)	
+	$(CC) -o fft3d.bin $(OBJFILES) $(CFLAGS)
 
 %.o: %.cpp $(HFILES)
 	$(CC) -c -o $@ $< $(CFLAGS)
 clean:
-	rm *.o 3dfft.bin
+	rm *.o fft3d.bin
 

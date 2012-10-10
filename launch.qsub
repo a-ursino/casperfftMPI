@@ -5,4 +5,4 @@
 #$ -S /bin/bash
 #$ -pe orte 2
 #$ -q fast.q
-time /opt/openmpi/bin/mpirun  ./3dfft.bin config
+time /opt/openmpi/bin/mpirun  ./fft3d.bin config
