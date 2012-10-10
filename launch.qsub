@@ -1,5 +1,5 @@
 ##!/bin/bash
-#$ -N 3dfft
+#$ -N fft3d
 #$ -cwd
 #$ -j y
 #$ -S /bin/bash
