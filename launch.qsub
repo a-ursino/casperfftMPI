@@ -1,0 +1,8 @@
+##!/bin/bash
+#$ -N 3dfft
+#$ -cwd
+#$ -j y
+#$ -S /bin/bash
+#$ -pe orte 2
+#$ -q fast.q
+time /opt/openmpi/bin/mpirun  ./3dfft.bin config

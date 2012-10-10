@@ -1,0 +1,12 @@
+# FFT_ALGO 
+# 1 SLOW_FFT
+# 2 COOLEY_TUKEY
+# 3 STOCKHALM
+# 4 Sande-Tookey
+#######################
+BLOCK_SIZE 512
+FFT_ALGO 2
+PRINT_RESULT 0
+xRange 4
+yRange 4
+zRange 4
