@@ -32,7 +32,7 @@ int main(int argc, char **argv){
         printf("Error in config file abort");
         return 0;
       }else{
-        printf("Reading the file %s ok\n", fName);        
+        printf("Reading the file - %s - [end]\n", fName);        
       }
            
     } else {
