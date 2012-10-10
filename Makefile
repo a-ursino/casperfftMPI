@@ -16,5 +16,5 @@ fft3d:  $(OBJFILES)
 %.o: %.cpp $(HFILES)
 	$(CC) -c -o $@ $< $(CFLAGS)
 clean:
-	rm *.o fft3d.bin
+	rm *.o fft3d.bin outputfft3d.o* outputfft3d.po*
 
