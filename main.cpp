@@ -1,11 +1,14 @@
 #include <stdio.h>
-#include "fftutils.h"
 #include <iostream>
+#include "fftutils.h"
+#include "cooleyTukey.h"
 #include "mpi.h"
 
 using namespace std;
 
 int main(int argc, char **argv){
+
+  bool result = true;
 
   MPI_Init(NULL,NULL);
 
@@ -49,6 +52,7 @@ int main(int argc, char **argv){
       //print selected algorithm
       if (fftAlgo==2){
       	cout << "FFT algorithm = COOLEY_TUKEY" << endl;
+        result = runCooleyTukey(argv);
       }else{
       	cout << "Unknow FFT algorithm" << endl;
       }

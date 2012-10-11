@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "fftutils.h"
+#include <fstream>
 #include <iostream>
+#include "fftutils.h"
 
 using namespace std;
 
@@ -79,4 +80,4 @@ bool readConfig(const char* const fName){
     return true;
 }
 
-/* Functions Implementation*/
+/* Functions Implementation end*/
