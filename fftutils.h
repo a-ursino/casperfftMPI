@@ -21,7 +21,8 @@ extern unsigned zRange;
 
 void cleanup();
 bool readConfig(const char* const fName);
-
+unsigned initExecution(const unsigned size, const unsigned samplesize);
+int allocateHostMemory(const unsigned size, const unsigned samplesize);
 // Functions Prototype end
 
 #endif
