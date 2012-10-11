@@ -269,7 +269,8 @@ int allocateHostMemory(const unsigned size, const unsigned n){
     FILE *fd[7];
     int ASPAN = xRange*yRange*zRange;
 
-    int x,y;
+    int x;
+    unsigned y;
     for (x = 0; x < 6; x++) {
         fd[x] = fopen(path[x], "r");
         if (fd[x] != NULL) {
@@ -300,7 +301,7 @@ int allocateHostMemory(const unsigned size, const unsigned n){
     //******************************** mVec Initialization  STARTS ***************************************
 
     int XSTART, ZSTART;
-    int z;
+    unsigned z;
     /*for (z = 0; z < zRange * xRange * yReal; z++) {
         mVecI[2*z] = cos((2*pi*z)/(2*xReal));
         mVecI[2*z+1] = -1*sin((2*pi*z)/(2*xReal));
@@ -394,6 +395,7 @@ int allocateHostMemory(const unsigned size, const unsigned n){
             }
         }
     }
-    fclose(fd[6]);    
+    fclose(fd[6]); 
+    return 1;  
 }
 /* Functions Implementation end*/
