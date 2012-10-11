@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
-#include <complex.h>
 #include <math.h>
 #include <time.h>
 #include <sys/times.h>
