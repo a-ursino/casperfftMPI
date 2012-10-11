@@ -407,7 +407,7 @@ void printMe(const unsigned offset, double *datar,double *datai, int zR, int yR,
         for (y = yR-1; y >= 0; y--) {
             YSTART = y*xR;
             for (x = 0; x < xR; x++) 
-            printf("(%.8f,\ i:\%.8f)\t", datar[(offset+off+XYSTART+YSTART+x)], datai[offset+(off+XYSTART+YSTART+x)]);
+            printf("(%.8f,i:%.8f)\t", datar[(offset+off+XYSTART+YSTART+x)], datai[offset+(off+XYSTART+YSTART+x)]);            
             printf("\n");
         }
         printf("---\n");
