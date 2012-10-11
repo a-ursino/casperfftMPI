@@ -1,5 +1,5 @@
-#ifndef __FFTUTILS__
-#define __FFTUTILS__
+#ifndef __COOLEYTUKEY__
+#define __COOLEYTUKEY__
 
 
 // Functions Prototype 

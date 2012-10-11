@@ -1,6 +1,5 @@
-#include "clutil.h"
-#include "fft.h"
 #include <iostream>
+#include "cooleyTukey.h"
 
 using namespace std;
 
