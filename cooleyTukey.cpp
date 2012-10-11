@@ -39,7 +39,8 @@ bool runCooleyTukey(const char* const argv[] ){
 		return false;
 	}
 
-
+	// matrix dimension
+	unsigned sizeOnCPU = size;
 	return true;
 
 }
