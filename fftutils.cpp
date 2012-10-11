@@ -295,7 +295,7 @@ int allocateHostMemory(const unsigned size, const unsigned n){
 
     
     // printf("aVEC STARTING VALUES \n");
-    // printMe(0,hraVec, hiaVec, zRange, yRange, xRange, 0*ASPAN );
+    printMe(0,hraVec, hiaVec, zRange, yRange, xRange, 0*ASPAN );
 
     //******************************** mVec Initialization  STARTS ***************************************
 
@@ -397,4 +397,21 @@ int allocateHostMemory(const unsigned size, const unsigned n){
     fclose(fd[6]); 
     return 1;  
 }
+
+
+void printMe(const unsigned offset, double *datar,double *datai, int zR, int yR, int xR, int off) {
+    int XYSTART, YSTART, x, y, z;
+    for (z = 0; z < zR; z++) {
+        XYSTART = z*xR*yR;
+        printf("Plane %d \n", z+1);
+        for (y = yR-1; y >= 0; y--) {
+            YSTART = y*xR;
+            for (x = 0; x < xR; x++) 
+            printf("(%.8f,\ i:\%.8f)\t", datar[(offset+off+XYSTART+YSTART+x)], datai[offset+(off+XYSTART+YSTART+x)]);
+            printf("\n");
+        }
+        printf("---\n");
+    }
+}
+
 /* Functions Implementation end*/
