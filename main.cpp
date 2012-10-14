@@ -68,10 +68,11 @@ int main(int argc, char **argv){
     int num_elements_per_proc=2;
     if (rankid==0){
       rand_nums= (float*)malloc(sizeof(float)*num_proc*num_elements_per_proc);
+      for (int i = 0; i < num_elements_per_proc*num_proc; ++i){
+        rand_nums[i]=2.5;
+      }
     }
-    for (int i = 0; i < num_elements_per_proc*num_proc; ++i){
-      rand_nums[i]=2.5;
-    }
+    
     sub_rand_nums=(float*)malloc(sizeof(float)*num_elements_per_proc);
     //MPI_Scatter(void* send_data, int send_count, MPI_Datatype send_datatype, void* recv_data, int recv_count, MPI_Datatype recv_datatype, int root, MPI_Comm communicator)
     MPI_Scatter(rand_nums, num_elements_per_proc, MPI_FLOAT, sub_rand_nums, num_elements_per_proc, MPI_FLOAT, 0, MPI_COMM_WORLD);
