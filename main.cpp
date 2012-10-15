@@ -219,9 +219,9 @@ int main(int argc, char **argv){
 
 
       MPI_Barrier(MPI_COMM_WORLD);
+      printf("After MPI_BARRIER\n");
 
-
-      //convolveCPU(offset1,ASPAN);
+      convolveCPU(0,ASPAN);
 
     }
 
