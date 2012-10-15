@@ -104,18 +104,20 @@ void convolveCPU(const unsigned offset1,int ASPAN){
 	}
 }
 
-void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigned size,double *data3DFr,double *data3DFi,double *data3DRr,double *data3DRi,int ASPAN_offset, int show_results, int fft_type){
+void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigned size,double *data3DFr,double *data3DFi,double *data3DRr,double *data3DRi,int ASPAN_offset, int show_results, int fft_type,int xRange,int yRange,int zRange){
 	if (size == 0) return;
 	//if (useCpu == 0) return;
 	int planeStart=0;
 	int tHolder = 0;
 
 	//reinitializing them when the ranges are different
+	/* TO CHECK 
 	if(fft_type !=1){
 		xRange = initialxRange;
 		yRange = initialyRange;
 		zRange = initialzRange;
 	}
+	*/
 	printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
 	if (show_results == 1) {
 		printf("Start\n");
