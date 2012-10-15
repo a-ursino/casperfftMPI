@@ -67,12 +67,17 @@ int main(int argc, char **argv){
 
     }
 
-    //set up enviroment....
+    //set up enviroment and initialize shared variable
+
     const unsigned n = xRange;
     const unsigned size = xRange*yRange*zRange;
     int ASPAN = xRange*yRange*zRange;
     int zBar, yBar, xBar;
     int full3dfft=1;
+    int show_result = 0;
+    int FFT_type = 0;
+    unsigned matrix_size=size; // matrix dimension sizeOnCPU
+    int num_elements_per_proc=size; //matrix dimension
 
     initialxRange = xRange;
     initialyRange = yRange;
@@ -85,10 +90,7 @@ int main(int argc, char **argv){
       zBar = zRange; yBar = xRange; xBar = yRange;
     }
 
-    int show_result = 0;
-    int FFT_type = 0;
-    unsigned matrix_size=size; // matrix dimension sizeOnCPU
-    int num_elements_per_proc=size; //matrix dimension
+
 
     //...and allocate memory on root node
     if (rankid==root){
@@ -103,6 +105,8 @@ int main(int argc, char **argv){
     if(full3dfft==1){
       show_result = 0;
       FFT_type = 0; //Forward FFT
+      //----------------------------(2. aVec XX,XY,XZ,YY,YZ,ZZ [start])----------------------------------
+
       MPI_Scatter(hraVec, num_elements_per_proc, MPI_DOUBLE, recv_hraVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       MPI_Scatter(hiaVec, num_elements_per_proc, MPI_DOUBLE, recv_hiaVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       //stringstream msg;
@@ -117,6 +121,45 @@ int main(int argc, char **argv){
 
       MPI_Gather(local_hrRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hrRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       MPI_Gather(local_hiRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hiRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+
+      //----------------------------(2. aVec XX,XY,XZ,YY,YZ,ZZ [Ends])----------------------------------
+      //all the slave must have complete
+
+      //----------------------------(3 mVecI [Starts])----------------------------------
+      if (rankid==root){
+        MPI_Send(hrmVecI, matrix_size, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD);
+        MPI_Send(himVecI, matrix_size, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD);
+      }
+      if (rankid==1){
+        double *recv_hrmVecI_buffer=(double*)malloc(sizeof(double)*matrix_size);
+        double *recv_himVecI_buffer=(double*)malloc(sizeof(double)*matrix_size);
+        
+        double *local_hrRmVecI_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+        double *local_hiRmVecI_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+        
+        MPI_Recv(recv_hrmVecI_buffer, matrix_size, MPI_DOUBLE, int 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(recv_himVecI_buffer, matrix_size, MPI_DOUBLE, int 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        
+        cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecI_buffer,recv_himVecI_buffer,local_hrRmVecI_buffer,local_hiRmVecI_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
+
+      }
+      //----------------------------(3 mVecI [Ends])----------------------------------
+
+      //----------------------------(4 mVecJ [Starts])----------------------------------
+
+
+      //----------------------------(4 mVecJ [Ends])----------------------------------
+
+      //----------------------------(5 mVecK [Starts])----------------------------------
+
+
+      //----------------------------(5 mVecK [Ends])----------------------------------
+
+      MPI_Barrier(MPI_COMM_WORLD);
+
+
+      //convolveCPU(offset1,ASPAN);
 
     }
 
