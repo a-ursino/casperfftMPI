@@ -108,7 +108,7 @@ void transpose3(const unsigned offset, double *data3DRr, double *data3DRi, int z
 	free(slice1);
 }
 void convolveCPU(const unsigned offset1,int ASPAN){
-	if (useCpu == 0) return; 
+	//if (useCpu == 0) return; 
 	for (int iz = 0; iz < xRange * yRange * zRange; iz++) {
 
 		hrhVecI[(iz+offset1)] = hrRaVec[(0*ASPAN+iz+offset1)]   * hrRmVecI[iz+offset1] - hiRaVec[(0*ASPAN+iz+offset1)] 	* hiRmVecI[iz+offset1] +	// XX
@@ -150,7 +150,7 @@ void convolveCPU(const unsigned offset1,int ASPAN){
 
 void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigned size,double *data3DFr,double *data3DFi,double *data3DRr,double *data3DRi,int ASPAN_offset, int show_results, int fft_type){
 	if (size == 0) return;
-	if (useCpu == 0) return;
+	//if (useCpu == 0) return;
 	int planeStart=0;
 	int tHolder = 0;
 
@@ -380,7 +380,7 @@ void cooleyTukeyCpu(const unsigned offset, const unsigned  N, const unsigned siz
 
         for (unsigned p = 0; p < powN ; ++p ) {            // for number of stages         // In kernel it is = for(Iter =0 ,nIter =1;Iter<(powN);Iter ++,nIter*=2)
 			// if(p==0){
-        	const unsigned powP = (unsigned)pow(2, p);    
+        	const unsigned powP = (unsigned)pow(2.0, (double)p);    
 
             #pragma omp parallel for
             for (int k = 0; k < (int)N / 2; ++k) {         // for butter fly calculation         // In kernel it is = thread id i.e addr i.e not N/2 rather size/2 and lThread % n makes it N/2.
@@ -441,9 +441,12 @@ void cooleyTukeyCpu(const unsigned offset, const unsigned  N, const unsigned siz
     //const double end = omp_get_wtime();
     //totalcputime+=end - start;
    	// cout << "CPU Time: " << end - start << endl;
+    /*
     if (print) {
     	printResult(size,data3DRr,data3DRi);
     }
+	*/
+
 }
 
 /* Functions Implementation end*/
