@@ -138,11 +138,14 @@ int main(int argc, char **argv){
         double *local_hrRmVecI_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
         double *local_hiRmVecI_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
         
-        MPI_Recv(recv_hrmVecI_buffer, matrix_size, MPI_DOUBLE, int 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Recv(recv_himVecI_buffer, matrix_size, MPI_DOUBLE, int 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(recv_hrmVecI_buffer, matrix_size, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(recv_himVecI_buffer, matrix_size, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         
         cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecI_buffer,recv_himVecI_buffer,local_hrRmVecI_buffer,local_hiRmVecI_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
-
+        
+        //send the data processed back to root        
+        MPI_Send(local_hrRmVecI_buffer, matrix_size, MPI_DOUBLE, root, 0, MPI_COMM_WORLD);
+        MPI_Send(local_hiRmVecI_buffer, matrix_size, MPI_DOUBLE, root, 1, MPI_COMM_WORLD);
       }
       //----------------------------(3 mVecI [Ends])----------------------------------
 
@@ -155,6 +158,16 @@ int main(int argc, char **argv){
 
 
       //----------------------------(5 mVecK [Ends])----------------------------------
+
+      if (rankid==root){
+        //mVecI
+        MPI_Recv(hrRmVecI, matrix_size, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(hiRmVecI, matrix_size, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        //mVecJ
+
+        //mVecK
+      }
+
 
       MPI_Barrier(MPI_COMM_WORLD);
 
