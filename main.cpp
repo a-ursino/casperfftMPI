@@ -128,24 +128,33 @@ int main(int argc, char **argv){
 
       //----------------------------(3 mVecI [Starts])----------------------------------
       if (rankid==root){
-        MPI_Send(hrmVecI, matrix_size, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD);
-        MPI_Send(himVecI, matrix_size, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD);
+        int dest=1;
+        printf("Sending the mVecI data from root to dest: %d ...\n", dest);
+        MPI_Send(hrmVecI, matrix_size, MPI_DOUBLE, dest, 0, MPI_COMM_WORLD);
+        MPI_Send(himVecI, matrix_size, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD);
+        printf("Sent the mVecI data from root to dest: %d end\n", dest);
       }
       if (rankid==1){
+        int src=0;
         double *recv_hrmVecI_buffer=(double*)malloc(sizeof(double)*matrix_size);
         double *recv_himVecI_buffer=(double*)malloc(sizeof(double)*matrix_size);
         
         double *local_hrRmVecI_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
         double *local_hiRmVecI_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
         
-        MPI_Recv(recv_hrmVecI_buffer, matrix_size, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Recv(recv_himVecI_buffer, matrix_size, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        
+        printf("Process 1: Receiving the mVecI data from root...\n");
+        MPI_Recv(recv_hrmVecI_buffer, matrix_size, MPI_DOUBLE, src, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(recv_himVecI_buffer, matrix_size, MPI_DOUBLE, src, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        printf("Process 1: Received the mVecI data from root [end]\n");
+
+        printf("Process 1: Processing with ct3dfft mVecI data ...\n");
         cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecI_buffer,recv_himVecI_buffer,local_hrRmVecI_buffer,local_hiRmVecI_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
-        
-        //send the data processed back to root        
+        printf("Process 1: Processed with ct3dfft mVecI data \n");
+        //send the data processed back to root   
+        printf("Sending the mVecI data processed from process1 to root...\n", dest);     
         MPI_Send(local_hrRmVecI_buffer, matrix_size, MPI_DOUBLE, root, 0, MPI_COMM_WORLD);
         MPI_Send(local_hiRmVecI_buffer, matrix_size, MPI_DOUBLE, root, 1, MPI_COMM_WORLD);
+        printf("Sent the mVecI data from root to dest: %d end\n", dest);
       }
       //----------------------------(3 mVecI [Ends])----------------------------------
 
