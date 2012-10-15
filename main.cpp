@@ -7,6 +7,9 @@
 using namespace std;
 
 int root=0;
+int initialxRange;
+int initialyRange;
+int initialzRange;
 
 
 int main(int argc, char **argv){
@@ -100,6 +103,6 @@ int main(int argc, char **argv){
     }
 
     //All
-    
+
     MPI_Finalize();
 }

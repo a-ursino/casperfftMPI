@@ -5,11 +5,6 @@
 
 using namespace std;
 
-
-int initialxRange;
-int initialyRange;
-int initialzRange;
-
 /* Functions Implementation*/
 
 void transpose2(double *data3DRr,double *data3DRi, int xR, int yR, int off) 
