@@ -96,7 +96,7 @@ int main(int argc, char **argv){
 
     if (rankid==root){   
       for (int i = 0; i < num_elements_per_proc*num_proc; ++i){      
-        printf("Processor %s, rank %d out of %d processors. [%f ]\n",processor_name, rankid, world_size,sub_rand_nums[i] );
+        printf("Processor %s, rank %d out of %d processors. [%f ]\n",processor_name, rankid, world_size,recv_buffer[i] );
       }
     }
 
