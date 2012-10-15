@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
 #include "fftutils.h"
 #include "cooleyTukey.h"
 #include "mpi.h"
@@ -104,8 +105,9 @@ int main(int argc, char **argv){
       FFT_type = 0; //Forward FFT
       MPI_Scatter(hraVec, num_elements_per_proc, MPI_DOUBLE, recv_hraVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       MPI_Scatter(hiaVec, num_elements_per_proc, MPI_DOUBLE, recv_hiaVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-      printMeInfo(rankid+" rankid recv_hraVec_buffer recv_hiaVec_buffer)",0,recv_hraVec_buffer, hiaVec, zRange, yRange, xRange, 0*ASPAN );
+      stringstream msg;
+      msg << "recv_hraVec_buffer recv_hiaVec_buffer from rankid" << rankid;
+      printMeInfo(msg.str(),0,recv_hraVec_buffer, hiaVec, zRange, yRange, xRange, 0*ASPAN );
 
 
     }

@@ -391,8 +391,8 @@ void printMe(const unsigned offset, double *datar,double *datai, int zR, int yR,
     }
 }
 
-void printMeInfo(char * msg,const unsigned offset, double *datar,double *datai, int zR, int yR, int xR, int off) {
-    printf("PrintMeInfo Start [%s]\n", msg);
+void printMeInfo(const std::string& msg,const unsigned offset, double *datar,double *datai, int zR, int yR, int xR, int off) {
+    cout << "PrintMeInfo Start "<< msg << endl;
     int XYSTART, YSTART, x, y, z;
     for (z = 0; z < zR; z++) {
         XYSTART = z*xR*yR;
@@ -405,6 +405,6 @@ void printMeInfo(char * msg,const unsigned offset, double *datar,double *datai, 
         }
         printf("---\n");
     }
-    printf("PrintMeInfo Ends [%s]\n", msg);
+    cout << "PrintMeInfo Ends "<< msg << endl;
 }
 /* Functions Implementation end*/

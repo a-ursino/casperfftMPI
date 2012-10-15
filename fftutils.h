@@ -77,7 +77,7 @@ unsigned initExecution(const unsigned size, const unsigned samplesize);
 int allocateHostMemory(const unsigned size, const unsigned samplesize);
 
 void printMe(const unsigned offset, double *datar,double *datai, int zR, int yR, int xR, int off);
-void printMeInfo(char *,const unsigned offset, double *datar,double *datai, int zR, int yR, int xR, int off);
+void printMeInfo(const std::string& msg,const unsigned offset, double *datar,double *datai, int zR, int yR, int xR, int off);
 
 
 // Functions Prototype end
