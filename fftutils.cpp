@@ -272,9 +272,7 @@ int allocateHostMemory(const unsigned size, const unsigned n){
         fclose(fd[x]); //ki fix
     }
 
-    
-    // printf("aVEC STARTING VALUES \n");
-    printMeInfo("hraVec hiaVec",0,hraVec, hiaVec, zRange, yRange, xRange, 0*ASPAN );
+    printMeInfo("aVEC STARTING VALUES (hraVec hiaVec)",0,hraVec, hiaVec, zRange, yRange, xRange, 0*ASPAN );
 
     //******************************** mVec Initialization  STARTS ***************************************
 

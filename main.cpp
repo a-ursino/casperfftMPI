@@ -87,6 +87,7 @@ int main(int argc, char **argv){
     int show_result = 0;
     int FFT_type = 0;
     unsigned sizeOnCPU=size; // matrix dimension
+    int num_elements_per_proc=size; //matrix dimension
 
     //...and allocate memory on root node
     if (rankid==root){
@@ -94,10 +95,17 @@ int main(int argc, char **argv){
         return false;
       }      
     }
+    //buffer to receive data from scatter
+    double *recv_hraVec_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+    double *recv_hiaVec_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
 
     if(full3dfft==1){
+      show_result = 0;
+      FFT_type = 0; //Forward FFT
+      MPI_Scatter(hraVec, num_elements_per_proc, MPI_DOUBLE, recv_hraVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      MPI_Scatter(hiaVec, num_elements_per_proc, MPI_DOUBLE, recv_hiaVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-
+      printMeInfo(rankid+" rankid recv_hraVec_buffer recv_hiaVec_buffer)",0,recv_hraVec_buffer, hiaVec, zRange, yRange, xRange, 0*ASPAN );
 
 
     }
