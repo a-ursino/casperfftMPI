@@ -151,7 +151,7 @@ int main(int argc, char **argv){
         cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecI_buffer,recv_himVecI_buffer,local_hrRmVecI_buffer,local_hiRmVecI_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
         printf("Process 1: Processed with ct3dfft mVecI data \n");
         //send the data processed back to root   
-        printf("Sending the mVecI data processed from process 1 to root...\n", dest);     
+        printf("Sending the mVecI data processed from process 1 to root...\n");     
         MPI_Send(local_hrRmVecI_buffer, matrix_size, MPI_DOUBLE, root, 0, MPI_COMM_WORLD);
         MPI_Send(local_hiRmVecI_buffer, matrix_size, MPI_DOUBLE, root, 1, MPI_COMM_WORLD);
         printf("Sent the mVecI data processed from process 1 to root end\n");
