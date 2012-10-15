@@ -220,8 +220,10 @@ int main(int argc, char **argv){
 
       MPI_Barrier(MPI_COMM_WORLD);
       printf("After MPI_BARRIER\n");
-
-      convolveCPU(0,ASPAN);
+      if (rankid==root){
+        convolveCPU(0,ASPAN);  
+      }
+      
 
     }
 
