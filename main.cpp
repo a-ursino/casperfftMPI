@@ -106,8 +106,8 @@ int main(int argc, char **argv){
       MPI_Scatter(hraVec, num_elements_per_proc, MPI_DOUBLE, recv_hraVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       MPI_Scatter(hiaVec, num_elements_per_proc, MPI_DOUBLE, recv_hiaVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       stringstream msg;
-      msg << "recv_hraVec_buffer recv_hiaVec_buffer from rankid" << rankid;
-      printMeInfo(msg.str(),0,recv_hraVec_buffer, hiaVec, zRange, yRange, xRange, 0*ASPAN );
+      msg << "recv_hraVec_buffer recv_hiaVec_buffer from rankid " << rankid;
+      printMeInfo(msg.str(),0,recv_hraVec_buffer, recv_hiaVec_buffer, zRange, yRange, xRange, 0*ASPAN );
 
 
     }
