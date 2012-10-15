@@ -87,7 +87,7 @@ int main(int argc, char **argv){
 
     int show_result = 0;
     int FFT_type = 0;
-    unsigned sizeOnCPU=size; // matrix dimension
+    unsigned matrix_size=size; // matrix dimension sizeOnCPU
     int num_elements_per_proc=size; //matrix dimension
 
     //...and allocate memory on root node
@@ -105,10 +105,18 @@ int main(int argc, char **argv){
       FFT_type = 0; //Forward FFT
       MPI_Scatter(hraVec, num_elements_per_proc, MPI_DOUBLE, recv_hraVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       MPI_Scatter(hiaVec, num_elements_per_proc, MPI_DOUBLE, recv_hiaVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-      stringstream msg;
-      msg << "recv_hraVec_buffer recv_hiaVec_buffer from rankid " << rankid;
-      printMeInfo(msg.str(),0,recv_hraVec_buffer, recv_hiaVec_buffer, zRange, yRange, xRange, 0*ASPAN );
+      //stringstream msg;
+      //msg << "recv_hraVec_buffer recv_hiaVec_buffer from rankid " << rankid;
+      //printMeInfo(msg.str(),0,recv_hraVec_buffer, recv_hiaVec_buffer, zRange, yRange, xRange, 0*ASPAN );
 
+      //local buffer
+      double *local_hrRaVec_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+      double *local_hiRaVec_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+
+      cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hraVec_buffer,recv_hiaVec_buffer,local_hrRaVec_buffer,local_hiRaVec_buffer,0,show_result,FFT_type);
+
+      MPI_Gather(local_hrRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hrRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      MPI_Gather(local_hiRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hiRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     }
 

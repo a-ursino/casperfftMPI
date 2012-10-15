@@ -396,7 +396,7 @@ void printMeInfo(const std::string& msg,const unsigned offset, double *datar,dou
     int XYSTART, YSTART, x, y, z;
     for (z = 0; z < zR; z++) {
         XYSTART = z*xR*yR;
-        printf("Plane %d \n", z+1);
+        cout << "Plane " << z+1 << " "<< msg <<endl;
         for (y = yR-1; y >= 0; y--) {
             YSTART = y*xR;
             for (x = 0; x < xR; x++) 
