@@ -4,7 +4,6 @@
 
 // Functions Prototype 
 
-bool runCooleyTukey(const char* const argv[] );
 void transpose2(double *data3DRr,double *data3DRi, int xR, int yR, int off);
 void transpose3(const unsigned offset, double *data3DRr, double *data3DRi, int zR, int yR, int xR, int off);
 void convolveCPU(const unsigned offset1,int ASPAN);

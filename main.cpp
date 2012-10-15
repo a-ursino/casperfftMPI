@@ -54,8 +54,7 @@ int main(int argc, char **argv){
 
       //print selected algorithm
       if (fftAlgo==2){
-      	cout << "FFT algorithm = COOLEY_TUKEY" << endl;
-        result = runCooleyTukey(argv);
+      	cout << "FFT algorithm = COOLEY_TUKEY" << endl;        
       }else{
       	cout << "Unknow FFT algorithm" << endl;
       }
@@ -64,45 +63,43 @@ int main(int argc, char **argv){
 
     }
 
-    //All
+    //set up enviroment....
+    const unsigned n = xRange;
+    const unsigned size = xRange*yRange*zRange;
+    int ASPAN = xRange*yRange*zRange;
+    int zBar, yBar, xBar;
+    int full3dfft=1;
 
-    float *rand_nums, *sub_rand_nums,*recv_buffer;
-    int num_proc=6;
-    int num_elements_per_proc=2;
+    initialxRange = xRange;
+    initialyRange = yRange;
+    initialzRange = zRange;
+
+    if (zRange > 1) {
+      zBar = xRange; yBar = yRange; xBar = zRange;
+    }
+    else { 
+      zBar = zRange; yBar = xRange; xBar = yRange;
+    }
+
+    int show_result = 0;
+    int FFT_type = 0;
+    unsigned sizeOnCPU=size; // matrix dimension
+
+    //...and allocate memory on root node
     if (rankid==root){
-      rand_nums= (float*)malloc(sizeof(float)*num_proc*num_elements_per_proc);
-      for (int i = 0; i < num_elements_per_proc*num_proc; ++i){
-        rand_nums[i]=2.5;
-      }
+      if (!initExecution(size, n)) {
+        return false;
+      }      
     }
+
+    if(full3dfft==1){
+
+
+
+
+    }
+
+    //All
     
-    sub_rand_nums=(float*)malloc(sizeof(float)*num_elements_per_proc);
-    //MPI_Scatter(void* send_data, int send_count, MPI_Datatype send_datatype, void* recv_data, int recv_count, MPI_Datatype recv_datatype, int root, MPI_Comm communicator)
-    MPI_Scatter(rand_nums, num_elements_per_proc, MPI_FLOAT, sub_rand_nums, num_elements_per_proc, MPI_FLOAT, 0, MPI_COMM_WORLD);
-    
-    //cooleyTukeyCpu3DFFT(start, n, sizeOnCPU,hraVec,hiaVec,hrRaVec,hiRaVec,ASPAN,show_result,FFT_type);
-
-    for (int i = 0; i < num_elements_per_proc; ++i){
-      sub_rand_nums[i]=rankid;
-      //printf("Processor %s, rank %d out of %d processors. [%f ]\n",processor_name, rankid, world_size,sub_rand_nums[i] );
-    }
-
-    if (rankid==root)
-    {
-      recv_buffer=(float*)malloc(sizeof(float)*num_proc*num_elements_per_proc);
-    }
-    //MPI_Gather(void* send_data, int send_count, MPI_Datatype send_datatype, void* recv_data, int recv_count, MPI_Datatype recv_datatype, int root, MPI_Comm communicator)
-    MPI_Gather(sub_rand_nums, num_elements_per_proc, MPI_FLOAT, recv_buffer, num_elements_per_proc, MPI_FLOAT, 0, MPI_COMM_WORLD);
-
-    if (rankid==root){   
-      for (int i = 0; i < num_elements_per_proc*num_proc; ++i){      
-        printf("Processor %s, rank %d out of %d processors. [%f ]\n",processor_name, rankid, world_size,recv_buffer[i] );
-      }
-    }
-
-
-
-
-
     MPI_Finalize();
 }

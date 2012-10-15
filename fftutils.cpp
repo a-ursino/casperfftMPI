@@ -142,29 +142,8 @@ bool readConfig(const char* const fName){
 
 unsigned initExecution(const unsigned size, const unsigned samplesize){
 
-    // Allocate host memory
+    // Allocate memory and set up the matrix
     allocateHostMemory(size, samplesize);
-    /*
-    if (deviceCount) {
-        cout << "Initializing device(s).." << endl;
-        // create the OpenCL context on available GPU devices
-        init_cl_context(CL_DEVICE_TYPE_GPU);
-
-        const cl_uint ciDeviceCount = getDeviceCount();
-
-
-        if (!ciDeviceCount) {
-            printf("No opencl specific devices!\n");
-            return 0;
-        }
-
-        printf("Creating Command Queue...\n");
-        // create a command queue on device 1
-        for (unsigned i = 0; i < deviceCount; ++i) {
-            createCommandQueue(i);
-        }
-    }
-    */
     return 1;
 }
 
@@ -295,7 +274,7 @@ int allocateHostMemory(const unsigned size, const unsigned n){
 
     
     // printf("aVEC STARTING VALUES \n");
-    printMe(0,hraVec, hiaVec, zRange, yRange, xRange, 0*ASPAN );
+    printMeInfo("hraVec hiaVec",0,hraVec, hiaVec, zRange, yRange, xRange, 0*ASPAN );
 
     //******************************** mVec Initialization  STARTS ***************************************
 
@@ -414,4 +393,20 @@ void printMe(const unsigned offset, double *datar,double *datai, int zR, int yR,
     }
 }
 
+void printMeInfo(char * msg,const unsigned offset, double *datar,double *datai, int zR, int yR, int xR, int off) {
+    printf("PrintMeInfo Start [%s]\n", msg);
+    int XYSTART, YSTART, x, y, z;
+    for (z = 0; z < zR; z++) {
+        XYSTART = z*xR*yR;
+        printf("Plane %d \n", z+1);
+        for (y = yR-1; y >= 0; y--) {
+            YSTART = y*xR;
+            for (x = 0; x < xR; x++) 
+            printf("(%.8f,i:%.8f)\t", datar[(offset+off+XYSTART+YSTART+x)], datai[offset+(off+XYSTART+YSTART+x)]);            
+            printf("\n");
+        }
+        printf("---\n");
+    }
+    printf("PrintMeInfo Ends [%s]\n", msg);
+}
 /* Functions Implementation end*/
