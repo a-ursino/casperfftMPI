@@ -196,7 +196,9 @@ int main(int argc, char **argv){
 
       //----------------------------(5 mVecK [Starts])----------------------------------
       if (rankid==root){
+        printf("Process 0: Processing with ct3dfft mVecK data ...\n");
         cooleyTukeyCpu3DFFT(0, n, matrix_size,hrmVecK,himVecK,hrRmVecK,hiRmVecK,0,show_result,FFT_type,xRange,yRange,zRange);
+        printf("Process 0: Processed with ct3dfft mVecK data \n");
       }
 
       //----------------------------(5 mVecK [Ends])----------------------------------
