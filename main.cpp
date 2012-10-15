@@ -135,7 +135,6 @@ int main(int argc, char **argv){
         printf("Sent the mVecI data from root to dest: %d end\n", dest);
       }
       if (rankid==1){
-        int src=0;
         double *recv_hrmVecI_buffer=(double*)malloc(sizeof(double)*matrix_size);
         double *recv_himVecI_buffer=(double*)malloc(sizeof(double)*matrix_size);
         
@@ -143,8 +142,8 @@ int main(int argc, char **argv){
         double *local_hiRmVecI_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
         
         printf("Process 1: Receiving the mVecI data from root...\n");
-        MPI_Recv(recv_hrmVecI_buffer, matrix_size, MPI_DOUBLE, src, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        MPI_Recv(recv_himVecI_buffer, matrix_size, MPI_DOUBLE, src, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(recv_hrmVecI_buffer, matrix_size, MPI_DOUBLE, root, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(recv_himVecI_buffer, matrix_size, MPI_DOUBLE, root, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         printf("Process 1: Received the mVecI data from root [end]\n");
 
         printf("Process 1: Processing with ct3dfft mVecI data ...\n");
@@ -158,23 +157,62 @@ int main(int argc, char **argv){
       }
       //----------------------------(3 mVecI [Ends])----------------------------------
 
-      //----------------------------(4 mVecJ [Starts])----------------------------------
 
+
+      //----------------------------(4 mVecJ [Starts])----------------------------------
+      if (rankid==root){
+        int dest=2;
+        printf("Sending the mVecJ data from root to dest: %d ...\n", dest);
+        MPI_Send(hrmVecJ, matrix_size, MPI_DOUBLE, dest, 0, MPI_COMM_WORLD);
+        MPI_Send(himVecJ, matrix_size, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD);
+        printf("Sent the mVecJ data from root to dest: %d end\n", dest);
+      }
+      if (rankid==2){
+        double *recv_hrmVecJ_buffer=(double*)malloc(sizeof(double)*matrix_size);
+        double *recv_himVecJ_buffer=(double*)malloc(sizeof(double)*matrix_size);
+        
+        double *local_hrRmVecJ_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+        double *local_hiRmVecJ_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+        
+        printf("Process 2: Receiving the mVecJ data from root...\n");
+        MPI_Recv(recv_hrmVecJ_buffer, matrix_size, MPI_DOUBLE, root, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(recv_himVecJ_buffer, matrix_size, MPI_DOUBLE, root, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        printf("Process 2: Received the mVecJ data from root [end]\n");
+
+        printf("Process 2: Processing with ct3dfft mVecJ data ...\n");
+        cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecJ_buffer,recv_himVecJ_buffer,local_hrRmVecJ_buffer,local_hiRmVecJ_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
+        printf("Process 2: Processed with ct3dfft mVecJ data \n");
+        //send the data processed back to root   
+        printf("Sending the mVecJ data processed from process 2 to root...\n");     
+        MPI_Send(local_hrRmVecJ_buffer, matrix_size, MPI_DOUBLE, root, 0, MPI_COMM_WORLD);
+        MPI_Send(local_hiRmVecJ_buffer, matrix_size, MPI_DOUBLE, root, 1, MPI_COMM_WORLD);
+        printf("Sent the mVecJ data processed from process 2 to root end\n");
+      }
 
       //----------------------------(4 mVecJ [Ends])----------------------------------
 
-      //----------------------------(5 mVecK [Starts])----------------------------------
 
+
+
+      //----------------------------(5 mVecK [Starts])----------------------------------
+      if (rankid==root){
+        cooleyTukeyCpu3DFFT(0, n, matrix_size,hrmVecK,himVecK,hrRmVecK,hiRmVecK,0,show_result,FFT_type,xRange,yRange,zRange);
+      }
 
       //----------------------------(5 mVecK [Ends])----------------------------------
 
       if (rankid==root){
+        printf("Root: Receiving the mVecI data from process 1\n");
         //mVecI
         MPI_Recv(hrRmVecI, matrix_size, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(hiRmVecI, matrix_size, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        printf("Root: Receved the mVecI data from process 1\n");
+        
+        printf("Root: Receiving the mVecJ data from process 2\n");
         //mVecJ
-
-        //mVecK
+        MPI_Recv(hrRmVecJ, matrix_size, MPI_DOUBLE, 2, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(hiRmVecJ, matrix_size, MPI_DOUBLE, 2, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        printf("Root: Receved the mVecJ data from process 2\n");
       }
 
 
