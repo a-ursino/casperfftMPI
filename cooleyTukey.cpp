@@ -306,7 +306,10 @@ void cooleyTukeyCpu(const unsigned offset, const unsigned  N, const unsigned siz
 	const double twopi =  2 * 3.14159265358979323846;
 	double cs;
 	double sn;
+	/* removed not used vars [ki]
     double norm = 1.0/(xRange*yRange*zRange);  //N;   // 'normalisation' factor (xRange*yRange*zRange);
+    */
+
     int red1=red;             
     red_off=0;
     for (unsigned i = 0; i < size / N; ++i) {        //Number of FFTS      //        In kernel it is = unsigned int lIndex =  lThread %n;
@@ -340,7 +343,7 @@ void cooleyTukeyCpu(const unsigned offset, const unsigned  N, const unsigned siz
 			// if(p==0){
         	const unsigned powP = (unsigned)pow(2.0, (double)p);    
 
-            #pragma omp parallel for
+            //#pragma omp parallel for
             for (int k = 0; k < (int)N / 2; ++k) {         // for butter fly calculation         // In kernel it is = thread id i.e addr i.e not N/2 rather size/2 and lThread % n makes it N/2.
                 const unsigned indexAdd = i * N + (k /  powP) * 2 * powP + k % powP + offset; // getting index // offset is the location of data in real memory starting point
 

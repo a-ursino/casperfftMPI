@@ -15,9 +15,9 @@ unsigned fftAlgo;
 unsigned print;
 
 //*******3dFFT default configuration file setting STARTS************//
-unsigned xRange = 4;
-unsigned yRange = 4;
-unsigned zRange = 4;
+unsigned xRange = 1;
+unsigned yRange = 1;
+unsigned zRange = 1;
 
 unsigned xFRange = xRange/2;
 unsigned yFRange = yRange/2;
@@ -168,14 +168,15 @@ int allocateHostMemory(const unsigned size, const unsigned n){
     } 
 
     ///////////////////// 3d fft host memory for N or aVec mVec and hVec vectors memeory allocation and initialization START /////////////////////////////////
-
+    /* removed not used vars ki
     int xReal = 2;
     int yReal = 2;
     int zReal = 2;
-
+    
     double MX = 26.726124191242441;
     double MY = 53.452248382484882; 
     double MZ = 80.178372573727316;
+    */
 
     printf("Real Dims: (%d,%d,%d)\n", xRange/2, yRange/2, zRange/2);
     //printf("FFTs Dims: (%d,%d,%d)\n", xFRange, yFRange, zFRange);

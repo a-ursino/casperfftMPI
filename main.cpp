@@ -14,8 +14,7 @@ int initialzRange;
 
 
 int main(int argc, char **argv){
-
-  bool result = true;
+  
   double startTime, endTime;
 
   MPI_Init(NULL,NULL);
@@ -71,7 +70,14 @@ int main(int argc, char **argv){
 
     }
 
-    //set up enviroment and initialize shared variable
+    // Initialize the vars (with the data coming from the config file) to share among all processes
+    int config_settings[4];
+    if (rankid==root){
+      config_settings[0]=xRange;
+      config_settings[1]=yRange;
+      config_settings[2]=zRange;
+    }
+    
 
     const unsigned n = xRange;
     const unsigned size = xRange*yRange*zRange;
