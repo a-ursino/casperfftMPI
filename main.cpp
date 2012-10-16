@@ -120,7 +120,7 @@ int main(int argc, char **argv){
       //local buffer
       double *local_hrRaVec_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
       double *local_hiRaVec_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
-
+      printf("Process:%d aVec cooleyTukeyCpu3DFFT with n:%d matrix_size:%d FFT_type:%d xRange:%d yRange:%d zRange:%d \n",n,matrix_size,FFT_type,xRange,yRange,zRange);
       cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hraVec_buffer,recv_hiaVec_buffer,local_hrRaVec_buffer,local_hiRaVec_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
 
       MPI_Gather(local_hrRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hrRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
