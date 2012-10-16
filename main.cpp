@@ -357,7 +357,8 @@ int main(int argc, char **argv){
     MPI_Finalize();
 
     if (rankid == root) { /* use time on master node */
-      printf("Runtime = %d\n", endTime-start);
+      printf("--------------------------------------------------------ENDS------------------------------------\n");
+      printf("Runtime = %f\n", endTime-start);
     }
 
 
