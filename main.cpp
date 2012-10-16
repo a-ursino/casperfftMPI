@@ -71,13 +71,20 @@ int main(int argc, char **argv){
     }
 
     // Initialize the vars (with the data coming from the config file) to share among all processes
-    int config_settings[4];
+    int config_settings[3];
     if (rankid==root){
       config_settings[0]=xRange;
       config_settings[1]=yRange;
       config_settings[2]=zRange;
     }
     
+    MPI_Bcast(&config_settings, 3, MPI_INT, root, MPI_COMM_WORLD);
+
+    if (rankid!=root){
+      xRange=config_settings[0];
+      yRange=config_settings[1];
+      zRange=config_settings[2];
+    }
 
     const unsigned n = xRange;
     const unsigned size = xRange*yRange*zRange;
