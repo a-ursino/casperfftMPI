@@ -101,10 +101,14 @@ int main(int argc, char **argv){
     initialzRange = zRange;
 
     if (zRange > 1) {
-      zBar = xRange; yBar = yRange; xBar = zRange;
+      zBar = xRange; 
+      yBar = yRange; 
+      xBar = zRange;
     }
     else { 
-      zBar = zRange; yBar = xRange; xBar = yRange;
+      zBar = zRange; 
+      yBar = xRange; 
+      xBar = yRange;
     }
 
 

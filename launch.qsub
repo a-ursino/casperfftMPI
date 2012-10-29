@@ -4,5 +4,6 @@
 #$ -j y
 #$ -S /bin/bash
 #$ -pe orte 6
-#$ -q fast.q
-time /opt/openmpi/bin/mpirun  ./fft3d.bin config
+#$ -q infiniband.q
+
+time /usr/mpi/gcc/openmpi-1.4.2/bin/mpirun -np 6  ./fft3d.bin config
