@@ -4,6 +4,6 @@
 #$ -j y
 #$ -S /bin/bash
 #$ -pe orte 7
-#$ -q all.q
+#$ -q intel.q
 
 time /opt/openmpi/bin/mpirun -np 7  ./fft3d.bin config
