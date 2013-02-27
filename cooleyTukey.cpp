@@ -91,6 +91,7 @@ void convolveCPU(const unsigned offset1,int ASPAN){
 								hiRaVec[(4*ASPAN+iz+offset1)] 	* hrRmVecJ[iz+offset1] + hrRaVec[(4*ASPAN+iz+offset1)]   * hiRmVecJ[iz+offset1] +	// ZY
 								hiRaVec[(5*ASPAN+iz+offset1)] 	* hrRmVecK[iz+offset1] + hrRaVec[(5*ASPAN+iz+offset1)]   * hiRmVecK[iz+offset1];	// ZZ
 	}
+	int show_results=0;
 	if (show_results){
 		printf("CONVOLUTION hVecI\n");
 		printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
