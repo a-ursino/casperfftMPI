@@ -4,6 +4,7 @@
 # 3 STOCKHALM
 # 4 Sande-Tookey
 ########################
+#not used yet
 BLOCK_SIZE 512
 FFT_ALGO 2
 PRINT_RESULT 0

@@ -172,11 +172,11 @@ int allocateHostMemory(const unsigned size, const unsigned n){
     int xReal = 2;
     int yReal = 2;
     int zReal = 2;
-    
+    */
     double MX = 26.726124191242441;
     double MY = 53.452248382484882; 
     double MZ = 80.178372573727316;
-    */
+    
 
     printf("Real Dims: (%d,%d,%d)\n", xRange/2, yRange/2, zRange/2);
     //printf("FFTs Dims: (%d,%d,%d)\n", xFRange, yFRange, zFRange);
@@ -203,7 +203,7 @@ int allocateHostMemory(const unsigned size, const unsigned n){
     
     // [end] aVec matrix, one for each log file 
 
-    // [start] mVec matrix of double
+    // [start] mVec matrix of double for 224.oommf file
 
     //// before bit reversal
     hrmVecI = (double *) malloc(sizeof(double)*xRange*yRange*zRange);
@@ -273,7 +273,7 @@ int allocateHostMemory(const unsigned size, const unsigned n){
         fclose(fd[x]); //ki fix
     }
 
-    printMeInfo("aVEC STARTING VALUES (hraVec hiaVec)",0,hraVec, hiaVec, zRange, yRange, xRange, 0*ASPAN );
+    printMeInfo("aVEC STARTING VALUES (hraVec hiaVec) with zRange->Plane",0,hraVec, hiaVec, zRange, yRange, xRange, 0*ASPAN );
 
     //******************************** mVec Initialization  STARTS ***************************************
 
@@ -315,17 +315,17 @@ int allocateHostMemory(const unsigned size, const unsigned n){
                             fgets(buffer, sizeof(buffer), fd[6] );
                             ptr = buffer;
                             buffer_inter = strtok_r(ptr, "\t", &remain);
-                            hrmVecI[(ZSTART+XSTART+x)] = atof(ptr);//MX;
+                            hrmVecI[(ZSTART+XSTART+x)] = MX; //atof(ptr);
                             himVecI[(ZSTART+XSTART+x)] = 0;
                             ptr = remain;
                             
                             buffer_inter = strtok_r(ptr, "\t", &remain);
-                            hrmVecJ[(ZSTART+XSTART+x)] = atof(ptr);//MY;
+                            hrmVecJ[(ZSTART+XSTART+x)] = MY; //atof(ptr);
                             himVecJ[(ZSTART+XSTART+x)] = 0;
                             ptr = remain;
 
                             buffer_inter = strtok_r(ptr, "\n", &remain);
-                            hrmVecK[(ZSTART+XSTART+x)] = atof(ptr);//MZ;
+                            hrmVecK[(ZSTART+XSTART+x)] = MZ; //atof(ptr);
                             himVecK[(ZSTART+XSTART+x)] = 0;
                             ptr = remain;
                         }

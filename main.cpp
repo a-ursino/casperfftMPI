@@ -32,7 +32,9 @@ int main(int argc, char **argv){
   MPI_Get_processor_name(processor_name, &name_len);
 
   MPI_Barrier(MPI_COMM_WORLD); /* IMPORTANT */
-  startTime = MPI_Wtime();
+  if (rankid == root) {
+    startTime = MPI_Wtime();
+  }
 
   if(rankid==root){
     printf("Hello world from processor %s, rank %d out of %d processors. THE MASTER\n", processor_name, rankid, world_size);
@@ -113,7 +115,7 @@ int main(int argc, char **argv){
 
 
 
-    //...and allocate memory on root node
+    //...and allocate memory on root node and load input data from file
     if (rankid==root){
       if (!initExecution(size, n)) {
         return false;
@@ -135,11 +137,15 @@ int main(int argc, char **argv){
       //printMeInfo(msg.str(),0,recv_hraVec_buffer, recv_hiaVec_buffer, zRange, yRange, xRange, 0*ASPAN );
 
       //local buffer
+      //TODO only 
       double *local_hrRaVec_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
       double *local_hiRaVec_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+      
       printf("Process:%d aVec cooleyTukeyCpu3DFFT with n:%d matrix_size:%d FFT_type:%d xRange:%d yRange:%d zRange:%d \n",rankid,n,matrix_size,FFT_type,xRange,yRange,zRange);
+      
       cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hraVec_buffer,recv_hiaVec_buffer,local_hrRaVec_buffer,local_hiRaVec_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
 
+      //only the root has allocated the memory for hrRaVec and hiRaVec
       MPI_Gather(local_hrRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hrRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       MPI_Gather(local_hiRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hiRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
@@ -220,10 +226,39 @@ int main(int argc, char **argv){
         printf("Process 0: Processing with ct3dfft mVecK data ...\n");
         cooleyTukeyCpu3DFFT(0, n, matrix_size,hrmVecK,himVecK,hrRmVecK,hiRmVecK,0,show_result,FFT_type,xRange,yRange,zRange);
         printf("Process 0: Processed with ct3dfft mVecK data \n");
+        
+
+        /*
+        int dest=3;
+        printf("Sending the mVecK data from root to dest: %d ...\n", dest);
+        MPI_Send(hrmVecK, matrix_size, MPI_DOUBLE, dest, 0, MPI_COMM_WORLD);
+        MPI_Send(himVecK, matrix_size, MPI_DOUBLE, dest, 1, MPI_COMM_WORLD);
+        printf("Sent the mVecK data from root to dest: %d end\n", dest);*/
       }
+      /*
+      if (rankid==3){
+        double *recv_hrmVecK_buffer=(double*)malloc(sizeof(double)*matrix_size);
+        double *recv_himVecK_buffer=(double*)malloc(sizeof(double)*matrix_size);
+        
+        double *local_hrRmVecK_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+        double *local_hiRmVecK_buffer=(double*)malloc(sizeof(double)*num_elements_per_proc);
+        
+        printf("Process 3: Receiving the mVecJ data from root...\n");
+        MPI_Recv(recv_hrmVecK_buffer, matrix_size, MPI_DOUBLE, root, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(recv_himVecK_buffer, matrix_size, MPI_DOUBLE, root, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        printf("Process 3: Received the mVecK data from root [end]\n");
 
+        printf("Process 3: Processing with ct3dfft mVecK data ...\n");
+        cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecK_buffer,recv_himVecK_buffer,local_hrRmVecK_buffer,local_hiRmVecK_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
+        printf("Process 3: Processed with ct3dfft mVecK data \n");
+        //send the data processed back to root   
+        printf("Sending the mVecK data processed from process 3 to root...\n");     
+        MPI_Send(local_hrRmVecK_buffer, matrix_size, MPI_DOUBLE, root, 0, MPI_COMM_WORLD);
+        MPI_Send(local_hiRmVecK_buffer, matrix_size, MPI_DOUBLE, root, 1, MPI_COMM_WORLD);
+        printf("Sent the mVecK data processed from process 3 to root end\n");
+      }*/
       //----------------------------(5 mVecK [Ends])----------------------------------
-
+       //check !!!!!!!! 
       if (rankid==root){
         printf("Root: Receiving the mVecI data from process 1\n");
         //mVecI
@@ -236,11 +271,15 @@ int main(int argc, char **argv){
         MPI_Recv(hrRmVecJ, matrix_size, MPI_DOUBLE, 2, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Recv(hiRmVecJ, matrix_size, MPI_DOUBLE, 2, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         printf("Root: Receved the mVecJ data from process 2\n");
+        
+
       }
 
     } //end if full3dfft==1
     
-    MPI_Barrier(MPI_COMM_WORLD);
+   //check mpi_barrier
+
+    //MPI_Barrier(MPI_COMM_WORLD);
     printf("After MPI_BARRIER\n");
     if (rankid==root){
       convolveCPU(0,ASPAN);
@@ -367,9 +406,9 @@ int main(int argc, char **argv){
     //Collect hVec processed data on root node [ends]
 
     MPI_Barrier(MPI_COMM_WORLD);
-
-    endTime = MPI_Wtime();
-
+    if (rankid == root) {
+      endTime = MPI_Wtime();
+    }
     
     MPI_Finalize();
 
