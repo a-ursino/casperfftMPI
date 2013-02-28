@@ -137,8 +137,15 @@ int main(int argc, char **argv){
       FFT_type = 0; //Forward FFT
       //----------------------------(2. aVec XX,XY,XZ,YY,YZ,ZZ [start])----------------------------------
 
+      //
+      double startTimeScatter,endTimeScatter;
+      if (rankid==root){
+        startTimeScatter=MPI_Wtime();   
+      }
       MPI_Scatter(hraVec, num_elements_per_proc, MPI_DOUBLE, recv_hraVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       MPI_Scatter(hiaVec, num_elements_per_proc, MPI_DOUBLE, recv_hiaVec_buffer, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      
+
       //stringstream msg;
       //msg << "recv_hraVec_buffer recv_hiaVec_buffer from rankid " << rankid;
       //printMeInfo(msg.str(),0,recv_hraVec_buffer, recv_hiaVec_buffer, zRange, yRange, xRange, 0*ASPAN );
@@ -157,7 +164,10 @@ int main(int argc, char **argv){
       //only the root has allocated the memory for hrRaVec and hiRaVec
       MPI_Gather(local_hrRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hrRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       MPI_Gather(local_hiRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hiRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
+      if (rankid=root){
+        endTimeScatter= MPI_Wtime();
+        printf("Total Runtime in second (before scatter -> after gather on root node) = %f\n", endTimeScatter-startTimeScatter);
+      }
 
       //----------------------------(2. aVec XX,XY,XZ,YY,YZ,ZZ [Ends])----------------------------------
       //all the slave must have complete
