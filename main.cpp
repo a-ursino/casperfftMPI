@@ -152,7 +152,7 @@ int main(int argc, char **argv){
         printf("Process:%d aVec cooleyTukeyCpu3DFFT with n:%d matrix_size:%d FFT_type:%d xRange:%d yRange:%d zRange:%d \n",rankid,n,matrix_size,FFT_type,xRange,yRange,zRange);
       }     
       
-      cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hraVec_buffer,recv_hiaVec_buffer,local_hrRaVec_buffer,local_hiRaVec_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
+      cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hraVec_buffer,recv_hiaVec_buffer,local_hrRaVec_buffer,local_hiRaVec_buffer,0,_show_result,FFT_type,xRange,yRange,zRange);
 
       //only the root has allocated the memory for hrRaVec and hiRaVec
       MPI_Gather(local_hrRaVec_buffer, num_elements_per_proc, MPI_DOUBLE, hrRaVec, num_elements_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -195,7 +195,7 @@ int main(int argc, char **argv){
         }
 
         
-        cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecI_buffer,recv_himVecI_buffer,local_hrRmVecI_buffer,local_hiRmVecI_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
+        cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecI_buffer,recv_himVecI_buffer,local_hrRmVecI_buffer,local_hiRmVecI_buffer,0,_show_result,FFT_type,xRange,yRange,zRange);
         if (_show_result){
           printf("Process 1: Processed with ct3dfft mVecI data \n");
           //send the data processed back to root   
@@ -240,7 +240,7 @@ int main(int argc, char **argv){
           printf("Process 2: Received the mVecJ data from root [end]\n");
           printf("Process 2: Processing with ct3dfft mVecJ data ...\n");
         }
-        cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecJ_buffer,recv_himVecJ_buffer,local_hrRmVecJ_buffer,local_hiRmVecJ_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
+        cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrmVecJ_buffer,recv_himVecJ_buffer,local_hrRmVecJ_buffer,local_hiRmVecJ_buffer,0,_show_result,FFT_type,xRange,yRange,zRange);
         
         if (_show_result){
           printf("Process 2: Processed with ct3dfft mVecJ data \n");
@@ -266,7 +266,7 @@ int main(int argc, char **argv){
           printf("Process 0: Processing with ct3dfft mVecK data ...\n");
         }
 
-        cooleyTukeyCpu3DFFT(0, n, matrix_size,hrmVecK,himVecK,hrRmVecK,hiRmVecK,0,show_result,FFT_type,xRange,yRange,zRange);
+        cooleyTukeyCpu3DFFT(0, n, matrix_size,hrmVecK,himVecK,hrRmVecK,hiRmVecK,0,_show_result,FFT_type,xRange,yRange,zRange);
         
         if (_show_result){
           printf("Process 0: Processed with ct3dfft mVecK data \n");
@@ -376,7 +376,7 @@ int main(int argc, char **argv){
         printf("Process 3: Processing with ct3dfft hVecI data ...\n");
       }
 
-      cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrhVecI_buffer,recv_hihVecI_buffer,local_hrRhVecI_buffer,local_hiRhVecI_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
+      cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrhVecI_buffer,recv_hihVecI_buffer,local_hrRhVecI_buffer,local_hiRhVecI_buffer,0,_show_result,FFT_type,xRange,yRange,zRange);
       if (_show_result){
         printf("Process 3: Processed with ct3dfft hVecI data \n");      
         //send the data processed back to root   
@@ -438,7 +438,7 @@ int main(int argc, char **argv){
         printf("Process 4: Processing with ct3dfft hVecJ data ...\n");
       }
 
-      cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrhVecJ_buffer,recv_hihVecJ_buffer,local_hrRhVecJ_buffer,local_hiRhVecJ_buffer,0,show_result,FFT_type,xRange,yRange,zRange);
+      cooleyTukeyCpu3DFFT(0, n, matrix_size,recv_hrhVecJ_buffer,recv_hihVecJ_buffer,local_hrRhVecJ_buffer,local_hiRhVecJ_buffer,0,_show_result,FFT_type,xRange,yRange,zRange);
       
       if (_show_result){
         printf("Process 4: Processed with ct3dfft hVecI data \n");
@@ -470,7 +470,7 @@ int main(int argc, char **argv){
         printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);      
         printf("Process 0: Processing with ct3dfft hVecK data ...\n");
       }
-      cooleyTukeyCpu3DFFT(0, n, matrix_size,hrhVecK,hihVecK,hrRhVecK,hiRhVecK,0,show_result,FFT_type,xRange,yRange,zRange);
+      cooleyTukeyCpu3DFFT(0, n, matrix_size,hrhVecK,hihVecK,hrRhVecK,hiRhVecK,0,_show_result,FFT_type,xRange,yRange,zRange);
       if (_show_result){
         printf("Process 0: Processed with ct3dfft hVecK data \n");
       }
