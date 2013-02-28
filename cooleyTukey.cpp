@@ -91,8 +91,8 @@ void convolveCPU(const unsigned offset1,int ASPAN){
 								hiRaVec[(4*ASPAN+iz+offset1)] 	* hrRmVecJ[iz+offset1] + hrRaVec[(4*ASPAN+iz+offset1)]   * hiRmVecJ[iz+offset1] +	// ZY
 								hiRaVec[(5*ASPAN+iz+offset1)] 	* hrRmVecK[iz+offset1] + hrRaVec[(5*ASPAN+iz+offset1)]   * hiRmVecK[iz+offset1];	// ZZ
 	}
-	int show_results=0;
-	if (show_results){
+	
+	if (_show_results){
 		printf("CONVOLUTION hVecI\n");
 		printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
 		printMe(0,hrhVecI, hihVecI, zRange, yRange, xRange, 0 );
@@ -118,8 +118,9 @@ void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigne
 		zRange = initialzRange;
 	}
 	*/
-	printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
-	if (show_results == 1) {
+	
+	if (_show_results) {
+		printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
 		printf("Start\n");
 		printMe(offset,data3DFr, data3DFi, zRange, yRange, xRange, ASPAN_offset );
 	}
@@ -127,8 +128,7 @@ void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigne
 	//************************** X TRANSFORM STARTS ********************************************//
 	cooleyTukeyCpu(offset, xRange, size,data3DFr,data3DFi,data3DRr,data3DRi,ASPAN_offset,show_results,fft_type,0,0,0);
 
-	if (show_results)
-	{
+	if (_show_results){
 		printf("X-TRANSFORM \n");
 		printMe(offset,data3DRr, data3DRi, zRange, yRange, xRange, ASPAN_offset );
 		//show_results=0;
@@ -138,15 +138,13 @@ void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigne
 	//************************** XY PLANE TRANSPOSE STARTS *******************************************//
 	if (yRange > 1)
 	{
-		for (int z = 0; z < zRange; z++) 
-		{
+		for (int z = 0; z < zRange; z++){
 			planeStart = offset + ASPAN_offset + z * xRange * yRange;
 			transpose2(data3DRr,data3DRi, xRange, yRange, planeStart);
 		}
 
 
-		if (show_results)
-		{
+		if (_show_results){
 			printf("Transpose XY \n");
 			printMe(offset,data3DRr, data3DRi, zRange, yRange, xRange, ASPAN_offset );
 		//show_results=0;
@@ -156,36 +154,32 @@ void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigne
 	//************************** XY PLANE TRANSPOSE ENDS *******************************************//
 
 	//************************** Y TRANSFORM STARTS ********************************************//
-	if (yRange > 1)
-	{
+	if (yRange > 1){
 		// N=yRange; //xRange=yRange;
 		// and yRange=xRange;
 		tHolder = xRange; xRange = yRange; yRange = tHolder;
-
-		printf("Y-TRANSFORM \n");
-		printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
+		if (_show_results){
+			printf("Y-TRANSFORM \n");
+			printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);		
+		}
 
 		cooleyTukeyCpu(offset, xRange, size,data3DRr,data3DRi,data3DFr,data3DFi,ASPAN_offset,show_results,fft_type,0,0,0);
 
-		if (show_results)
-		{
+		if (_show_results){
 			printf("Y-TRANSFORM \n");
-			printMe(offset,data3DFr, data3DFi, zRange, yRange, xRange, ASPAN_offset );
-		//show_results=0;
+			printMe(offset,data3DFr, data3DFi, zRange, yRange, xRange, ASPAN_offset );		
 		}
 	}
 	//************************** Y TRANSFORM ENDS ********************************************//
 
 	//************************** YZ PLANE TRANSPOSE STARTS *******************************************//
-	if (zRange > 1)	
-	{
+	if (zRange > 1){
 		transpose3(offset,data3DFr, data3DFi, zRange, yRange, xRange, ASPAN_offset);
-		tHolder = zRange; zRange = yRange; yRange = tHolder;
-		printf("Transpose YZ \n");
-		printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
-		if (show_results)
-		{
+		tHolder = zRange; zRange = yRange; yRange = tHolder;		
+
+		if (_show_results){
 			printf("Transpose YZ \n");
+			printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
 			printMe(offset,data3DFr, data3DFi, zRange, yRange, xRange, ASPAN_offset );
 		//show_results=0;
 		}
@@ -195,19 +189,17 @@ void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigne
 	//************************** ZX PLANE TRANSPOSE STARTS *******************************************//
 	if (zRange > 1)	
 	{
-		for (int z = 0; z < zRange; z++)
-		{
+		for (int z = 0; z < zRange; z++){
 			planeStart =  offset + ASPAN_offset + z * xRange * yRange;
 			transpose2(data3DFr, data3DFi, xRange, yRange, planeStart);
 		}
-		tHolder = xRange; xRange = yRange; yRange = tHolder;
-		printf("Transpose ZX \n");
-		printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);
-		if (show_results)
-		{
+
+		tHolder = xRange; xRange = yRange; yRange = tHolder;	
+			
+		if (_show_results){
 			printf("Transpose ZX \n");
+			printf("XRange=:%d\t YRange=:%d\t ZRange=:%d\t  \n", xRange,yRange,zRange);			
 			printMe(offset,data3DFr, data3DFi, zRange, yRange, xRange, ASPAN_offset );
-		//show_results=0;
 		}
 	}
 	//************************** ZX PLANE TRANSPOSE ENDS *******************************************//
@@ -234,8 +226,7 @@ void cooleyTukeyCpu3DFFT(const unsigned offset, const unsigned  N, const unsigne
 		}
 		// normalization in inverse fft ends
 
-		if (show_results)
-		{
+		if (_show_results){
 			printf("Z-TRANSFORM \n");
 			printMe(offset,data3DRr, data3DRi, zRange, yRange, xRange, ASPAN_offset );
 			//system("rm plotMe && touch plotMe");

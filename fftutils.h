@@ -2,14 +2,10 @@
 #define __FFTUTILS__
 
 // Global Vars
-
 extern unsigned blockSize;
 extern unsigned fftAlgo;
 extern unsigned print;
-
-extern unsigned blockSize;
-extern unsigned fftAlgo;
-extern unsigned print;
+extern unsigned _show_result;
 
 //*******3dFFT configuration file setting STARTS************//
 extern unsigned xRange;

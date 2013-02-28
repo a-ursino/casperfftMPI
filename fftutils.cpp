@@ -13,6 +13,7 @@ using namespace std;
 unsigned blockSize;
 unsigned fftAlgo;
 unsigned print;
+unsigned _show_result;
 
 //*******3dFFT default configuration file setting STARTS************//
 unsigned xRange = 1;
@@ -177,10 +178,11 @@ int allocateHostMemory(const unsigned size, const unsigned n){
     double MY = 53.452248382484882; 
     double MZ = 80.178372573727316;
     
-
-    printf("Real Dims: (%d,%d,%d)\n", xRange/2, yRange/2, zRange/2);
-    //printf("FFTs Dims: (%d,%d,%d)\n", xFRange, yFRange, zFRange);
-    printf("Finl Dims: (%d,%d,%d)\n", xRange, yRange, zRange);
+    if (_show_result){
+        printf("Real Dims: (%d,%d,%d)\n", xRange/2, yRange/2, zRange/2);
+        //printf("FFTs Dims: (%d,%d,%d)\n", xFRange, yFRange, zFRange);
+        printf("Finl Dims: (%d,%d,%d)\n", xRange, yRange, zRange);
+    }
     
     static const char *path[7];
     
